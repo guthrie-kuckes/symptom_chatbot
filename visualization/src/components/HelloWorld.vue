@@ -31,6 +31,10 @@
 </template>
 
 <script>
+ // Template zebras use
+const z = require('zebras')
+const data = z.readCSV('data.csv')
+print(z);
 export default {
   name: 'HelloWorld',
   props: {
