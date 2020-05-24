@@ -31,5 +31,20 @@
   - Vue.js
   - Firebase
 
+## Install Instructions
+
+You need to have homebrew installed. 
+
+To test messaging, you will need to:
+
+- Install the twiliio CLI
+
+     brew tap twilio/brew && brew install twilio
+     
+- Install pipenv:
+    
+    brew install pipenv
+    
+    
 
   
