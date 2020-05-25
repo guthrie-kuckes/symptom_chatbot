@@ -12,7 +12,7 @@ message = client.messages \
                 .create(
                      body="Join Earth's mightiest heroes. Like Kevin Bacon.",
                      from_=credentials.freePhoneNumber,
-                     to= credentials.guthriesIphone
+                     to= credentials.preferred_number
                  )
 
 print(message.sid)
