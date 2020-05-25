@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img src="./assets/map.jpg">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
