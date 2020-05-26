@@ -1,21 +1,16 @@
 <template>
 <v-layout align-center justify-center>
-    <vue-google-heatmap :points="points"
-                      width="100%"
-                      height="100%"
-                      :lat="42.3584300"
-                      :lng="-71.0597700"
-                      map-type="roadmap"
-                   
-                      />
+    <heatmap :points="points"  :lat="points[0].lat" :lng="points[0].lng"/>
 </v-layout>
 </template>
 
 <script>
- // Template zebras use
+ import heatmap from './heatMap';
 
 export default {
+
   name: 'Map',
+  components:{heatmap},
   data() {
     return {
       points: [

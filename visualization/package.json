@@ -13,6 +13,7 @@
     "firebase": "^7.14.5",
     "vue": "^2.6.11",
     "vue-google-heatmap": "^1.0.1",
+    "vue2-google-maps": "^0.10.7",
     "vuetify": "^2.2.11"
   },
   "devDependencies": {

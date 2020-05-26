@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import App from './App.vue'
-import VueGoogleHeatmap from 'vue-google-heatmap';
 import vuetify from './plugins/vuetify';
+import * as VueGoogleMaps from 'vue2-google-maps';
 
-Vue.use(VueGoogleHeatmap, {
-  apiKey: "AIzaSyBoPENiji-slQ3gjdjEY1WRKOfNgatSpMU"
-});
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyBoPENiji-slQ3gjdjEY1WRKOfNgatSpMU",
+    libraries: ["visualization"]
+  }
+})
 
 Vue.config.productionTip = false
 
