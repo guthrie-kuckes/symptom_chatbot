@@ -21,15 +21,20 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app  dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Application</v-toolbar-title>
-    </v-app-bar>
+    <v-app-bar app dark>
+      <div>
+        <v-tabs v-model="tab" align-with-title>
+          <v-tabs-slider ></v-tabs-slider>
 
+          <v-tab v-for="item in labels" :key="item">{{ item }}</v-tab>
+        </v-tabs>
+      </div>
+    </v-app-bar>
     <v-content>
       <v-container class="fill-height" fluid>
-        <v-layout align-center justify-center>
-          <Map />
+        <v-layout align-center justify-center column>
+          <Map :points="points[tab]"/>
+          
         </v-layout>
       </v-container>
     </v-content>
@@ -48,14 +53,46 @@ export default {
   props: {
     source: String
   },
-  data: () => ({
-    drawer: false
-  })
+  data() {
+    return {
+      tab: 0,
+      drawer: false,
+      active: null,
+      labels: ["Age", "Race"],
+      points: [
+        [
+          { lat: 42.35843, lng: -71.05977 },
+          { lat: 42.357117, lng: -71.059719 },
+          { lat: 42.356117, lng: -71.059719 },
+          { lat: 42.354117, lng: -71.058719 },
+          { lat: 42.356117, lng: -71.059919 },
+          { lat: 42.356117, lng: -71.059019 },
+          { lat: 42.356117, lng: -71.059719 }
+        ],
+        [
+          { lat: 42.25843, lng: -71.05977 },
+          { lat: 42.257117, lng: -71.059719 },
+          { lat: 42.256117, lng: -71.059719 },
+          { lat: 42.254117, lng: -71.058719 },
+          { lat: 42.256117, lng: -71.059919 },
+          { lat: 42.256117, lng: -71.059019 },
+          { lat: 42.256117, lng: -71.059719 }
+        ]
+      ],
+      // currentPoints: this.points[this.tab]
+    };
+  }
 };
 </script>
 
 <style>
-.container{
+.container {
   padding: 0;
+}
+
+.v-window-item.v-window-item--active,
+.v-window.v-item-group.theme--light.v-tabs-items {
+  height: 100%;
+  width: 100%;
 }
 </style>

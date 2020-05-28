@@ -24,7 +24,7 @@ export default {
     },
     initialZoom: {
       type: Number,
-      default: () => 500
+      default: () => 13
     },
     mapType: {
       type: String,
@@ -68,6 +68,7 @@ export default {
       }
     },
     heatmapPoints() {
+      console.log("Points used are: ", this.points[0]);
       return this.points.map(
         // eslint-disable-next-line
         point => new google.maps.LatLng(point.lat, point.lng)
@@ -349,27 +350,40 @@ export default {
           ]
         }
       ];
+    },
+    center() {
+      return new this.google.maps.LatLng(this.lat, this.lng);
+    },
+    options() {
+      return {
+        center: this.center,
+        zoom: this.initialZoom,
+        mapTypeId: this.mapType,
+        streetViewControl: false,
+        mapTypeControl: false
+      };
     }
   },
-  mounted() {
-    this.$gmapApiPromiseLazy().then(() => {
-      var sanFrancisco = new this.google.maps.LatLng(this.lat, this.lng);
-      var map = new this.google.maps.Map(document.getElementById("map"), {
-        center: sanFrancisco,
-        zoom: 13,
-        mapTypeId: "terrain"
+  methods: {
+    drawMap: function() {
+      this.$refs.heatmap.$mapPromise.then(map => {
+        map = new this.google.maps.Map(
+          document.getElementById("map"),
+          this.options
+        );
+        var heatmap = new this.google.maps.visualization.HeatmapLayer({
+          data: this.heatmapPoints
+        });
+        heatmap.setMap(map);
+        var styledMap = new this.google.maps.StyledMapType(this.mapStyle, {
+          name: "Styled Map"
+        });
+        map.mapTypes.set("styled_map", styledMap);
+        map.setMapTypeId("styled_map");
       });
-      var heatmap = new this.google.maps.visualization.HeatmapLayer({
-        data: this.heatmapPoints
-      });
-      heatmap.setMap(map);
-      var styledMap = new this.google.maps.StyledMapType(this.mapStyle, {
-        name: "Styled Map"
-      });
-      console.log(styledMap);
-        map.mapTypes.set('styled_map', styledMap);
-        map.setMapTypeId('styled_map');
-    });
-  }
+    }
+  },
+  mounted() {this.drawMap()},
+  beforeUpdate() {this.drawMap()}
 };
 </script>
