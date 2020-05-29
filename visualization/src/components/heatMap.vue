@@ -10,6 +10,7 @@
 
 <script>
 import { gmapApi } from "vue2-google-maps";
+// import {jsonString} from "../MA.js";
 
 export default {
   name: "heatmap",
@@ -362,26 +363,42 @@ export default {
         streetViewControl: false,
         mapTypeControl: false
       };
+    },
+    JSONurl(){
+      return 'http://bostonopendata-boston.opendata.arcgis.com/datasets/53ea466a189b4f43b3dfb7b38fa7f3b6_1.geojson?outSR={%22latestWkid%22:2249,%22wkid%22:102686}';
+    },
+    JSONStyle(){
+      return {fillOpacity: 0.0, strokeWeight: 1, strokeColor: 'white',strokeOpacity:0.1 };
     }
+
   },
   methods: {
     drawMap: function() {
+      // Getting map
       this.$refs.heatmap.$mapPromise.then(map => {
         map = new this.google.maps.Map(
           document.getElementById("map"),
-          this.options
+          this.options // adding options for center, map type and controls
         );
+
+        // Adding GeoJSON 
+        map.data.loadGeoJson(this.JSONurl);
+        map.data.setStyle(this.JSONStyle);
+
+        // Adding Heatmap Layer
         var heatmap = new this.google.maps.visualization.HeatmapLayer({
           data: this.heatmapPoints
         });
         heatmap.setMap(map);
+
+        // Customizing map with aubergine theme
         var styledMap = new this.google.maps.StyledMapType(this.mapStyle, {
           name: "Styled Map"
         });
         map.mapTypes.set("styled_map", styledMap);
         map.setMapTypeId("styled_map");
       });
-    }
+    },
   },
   mounted() {this.drawMap()},
   beforeUpdate() {this.drawMap()}
