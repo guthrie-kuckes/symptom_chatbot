@@ -1,5 +1,6 @@
 from flask import escape
-
+import pgeocode
+from info import zipcodes
 # gcloud functions deploy NAME --runtime RUNTIME TRIGGER [FLAGS...]
 def hello_http(request):
     """HTTP Cloud Function.
@@ -50,17 +51,22 @@ def sort_data(request):
         if not _request: 
             return None
         db = firestore.Client()
-        q = db.collection(u'users')
+        q = db.collection(u'test')
         for elem in _request.keys():
             if not _request[elem] == '':
-                q = q.where(elem, u'==', _request[elem])
+                print("Searching for", elem , '==', u'{}'.format(_request[elem]))
+                q = q.where(elem, '==', u'{}'.format(_request[elem]))
         docs = q.stream()
         l = []
+
         for doc in docs:
-            next = doc.to_dict()
-            for elem in _request.keys():
-                next.pop(elem)
-            l.append(next)
+            d = doc.to_dict()
+            location = d['location']
+            if location in zipcodes:
+                coords = zipcodes[location]
+            l.append(coords)
+
+        print("Locations are ", l)    
         return l
     except ImportError:
         print ("NO module found")
