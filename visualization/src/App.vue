@@ -34,7 +34,7 @@
     <v-content>
       <v-container class="fill-height" fluid>
         <v-layout align-center justify-center column>
-          <Map :points="points[tab]" />
+          <Map :points="points" />
         </v-layout>
       </v-container>
     </v-content>
@@ -64,24 +64,21 @@ export default {
       active: null,
       labels: ["Age", "Race"],
       points: [
-        [
-          { lat: 42.35843, lng: -71.05977 },
-          { lat: 42.357117, lng: -71.059719 },
-          { lat: 42.356117, lng: -71.059719 },
-          { lat: 42.354117, lng: -71.058719 },
-          { lat: 42.356117, lng: -71.059919 },
-          { lat: 42.356117, lng: -71.059019 },
-          { lat: 42.356117, lng: -71.059719 }
-        ],
-        [
-          { lat: 42.25843, lng: -71.05977 },
-          { lat: 42.257117, lng: -71.059719 },
-          { lat: 42.256117, lng: -71.059719 },
-          { lat: 42.254117, lng: -71.058719 },
-          { lat: 42.256117, lng: -71.059919 },
-          { lat: 42.256117, lng: -71.059019 },
-          { lat: 42.256117, lng: -71.059719 }
-        ]
+        { lat: 42.35843, lng: -71.05977 },
+        { lat: 42.357117, lng: -71.059719 },
+        { lat: 42.356117, lng: -71.059719 },
+        { lat: 42.354117, lng: -71.058719 },
+        { lat: 42.356117, lng: -71.059919 },
+        { lat: 42.356117, lng: -71.059019 },
+        { lat: 42.356117, lng: -71.059719 },
+
+        { lat: 42.25843, lng: -71.05977 },
+        { lat: 42.257117, lng: -71.059719 },
+        { lat: 42.256117, lng: -71.059719 },
+        { lat: 42.254117, lng: -71.058719 },
+        { lat: 42.256117, lng: -71.059919 },
+        { lat: 42.256117, lng: -71.059019 },
+        { lat: 42.256117, lng: -71.059719 }
       ],
       drawerItems: [
         ["0-18", "19-25", "26-45", "45-65", "65-80", "Above 80"],
@@ -105,21 +102,12 @@ export default {
       cors_enabled({ race: "white" }).then(
         res => {
           console.log(res);
+          this.points = res.data;
         },
         error => {
           console.log("Error is", error);
         }
       );
-      // .then(
-      //   result => {
-      //     var r = JSON.parse(result);
-      //     console.log("res ", r);
-      //   },
-      //   error => {
-      //     console.log("Has an error");
-      //     console.log("The error", error, error);
-      //   }
-      // );
     }
   },
   mounted() {

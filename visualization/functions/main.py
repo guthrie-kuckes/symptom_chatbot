@@ -47,7 +47,7 @@ def sort_data(request):
     """
 
     _request = request.get_json(silent=True)
-    print("_request is",request, _request)
+    print("_request is", request, _request)
     if not _request:
         _request = request.args
     if not _request:
@@ -61,7 +61,8 @@ def sort_data(request):
         q = db.collection(u'test')
         for elem in _request.keys():
             if not _request[elem] == '':
-                print("Searching for", elem , '==', u'{}'.format(_request[elem]))
+                print("Searching for", elem, '==',
+                      u'{}'.format(_request[elem]))
                 q = q.where(elem, '==', u'{}'.format(_request[elem]))
         docs = q.stream()
 
@@ -72,15 +73,12 @@ def sort_data(request):
                 coords = zipcodes[location]
             l.append(coords)
 
-        print("Locations are ", l)    
+        print("Locations are ", l)
 
     except ImportError:
-        print ("NO module found")
-
+        print("NO module found")
 
     # return cors_enabled_function_auth(request)
-    
-
 
 
 def cors_enabled(request):
@@ -98,7 +96,6 @@ def cors_enabled(request):
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Max-Age': '3600'
         }
-
         return ('', 204, headers)
 
     # Set CORS headers for the main request
@@ -106,11 +103,49 @@ def cors_enabled(request):
         'Access-Control-Allow-Origin': '*'
     }
 
+    print("In function", request)
+    _request = request.get_json(silent=True)
+    
+    if not _request:
+        _request = request.args
+    print(1, _request)
+    if not _request:
+        return ('', 204, headers)
+    print(2)
+    _request = _request['data']
+    print("_request is", request, _request)
+    l = []
+    try:
+        from google.cloud import firestore
+        db = firestore.Client()
+        q = db.collection(u'test')
+        for elem in _request.keys():
+            if not _request[elem] == '':
+                print("Searching for", elem, '==',
+                      u'{}'.format(_request[elem]))
+                q = q.where(elem, '==', u'{}'.format(_request[elem]))
+        docs = q.stream()
+        for doc in docs:
+            d = doc.to_dict()
+            location = d['location']
+            if location in zipcodes:
+                coords = zipcodes[location]
+            l.append(coords)
+
+        print("Locations are ", l)
+    except ImportError:
+        print("NO module found")
+
+    
+        
+
+    
+
     print("Headers are ", headers)
 
     res = make_response(
         jsonify(
-            {'data': 'data'}
+            {"data": l}
         ),
         200
     )
