@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire" dark>
-    <v-navigation-drawer v-model="drawer" app dark>
+    <v-navigation-drawer disable-resize-watcher v-model="drawer" app dark>
       <v-list dense>
         <v-list-item>
           <v-list-item-content>
@@ -10,10 +10,11 @@
         <v-list-item>
           <v-list-item-content>
             <v-layout column>
-              <v-flex v-for="category in drawerItems[tab]" :key="category">
-                  <v-checkbox v-model="selectedCategories" :label="category" :value="category"></v-checkbox>
+              <v-flex v-for="category in drawerItems[tab]" :key="category.substring(0,1)">
+                <v-checkbox v-model="selectedCategories" :label="category" :value="category"></v-checkbox>
               </v-flex>
-              <p>Showing results for: </p>
+              <v-btn @click="search(selectedCategories)">Search</v-btn>
+              <p>Showing results for:</p>
               <p v-for="i in selectedCategories" :key="i">{{i}}</p>
             </v-layout>
           </v-list-item-content>
@@ -46,6 +47,9 @@
 <script>
 import Map from "./components/Map.vue";
 import { db } from "./firebase/init.js";
+import firebase from "firebase/app";
+import "@firebase/functions";
+
 export default {
   components: {
     Map
@@ -87,9 +91,35 @@ export default {
       // currentPoints: this.points[this.tab]
     };
   },
-  methods:{
-    clearCategories: function(){
-      this.selectedCategories = []
+  methods: {
+    clearCategories: function() {
+      this.selectedCategories = [];
+    },
+    search: function(params) {
+      params.forEach(function(item) {
+        console.log(item);
+      });
+
+      var cors_enabled = firebase.functions().httpsCallable("cors_enabled");
+
+      cors_enabled({ race: "white" }).then(
+        res => {
+          console.log(res);
+        },
+        error => {
+          console.log("Error is", error);
+        }
+      );
+      // .then(
+      //   result => {
+      //     var r = JSON.parse(result);
+      //     console.log("res ", r);
+      //   },
+      //   error => {
+      //     console.log("Has an error");
+      //     console.log("The error", error, error);
+      //   }
+      // );
     }
   },
   mounted() {
