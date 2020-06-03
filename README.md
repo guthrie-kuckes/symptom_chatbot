@@ -33,6 +33,10 @@
 
 ## Install Instructions
 
+
+For mac: 
+
+
 You need to have homebrew installed. 
 
 To test messaging, you will need to:
@@ -44,6 +48,19 @@ To test messaging, you will need to:
 - Install pipenv:
     
     brew install pipenv
+    
+    To test locally and recieve messages, run something like
+    
+    twilio phone-numbers:update "+15017122661" --sms-url="http://localhost:5000/sms"
+    
+    (see https://www.twilio.com/docs/sms/quickstart/python)
+    
+    To run the code, run the followiing to enter the virtual environment
+    
+    pipenv shell
+    
+    
+
     
     
 
