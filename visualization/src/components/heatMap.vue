@@ -10,6 +10,7 @@
 
 <script>
 import { gmapApi } from "vue2-google-maps";
+// import {jsonString} from "../MA.js";
 
 export default {
   name: "heatmap",
@@ -73,6 +74,24 @@ export default {
         // eslint-disable-next-line
         point => new google.maps.LatLng(point.lat, point.lng)
       );
+    },
+    gradient(){
+      return [
+          'rgba(0, 255, 255, 0)',
+          'rgba(0, 255, 255, 1)',
+          'rgba(0, 191, 255, 1)',
+          'rgba(0, 127, 255, 1)',
+          'rgba(0, 63, 255, 1)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(0, 0, 223, 1)',
+          'rgba(0, 0, 191, 1)',
+          'rgba(0, 0, 159, 1)',
+          'rgba(0, 0, 127, 1)',
+          'rgba(63, 0, 91, 1)',
+          'rgba(127, 0, 63, 1)',
+          'rgba(191, 0, 31, 1)',
+          'rgba(255, 0, 0, 1)'
+        ]
     },
     mapStyle() {
       return [
@@ -362,26 +381,44 @@ export default {
         streetViewControl: false,
         mapTypeControl: false
       };
+    },
+    JSONurl(){
+      return 'http://bostonopendata-boston.opendata.arcgis.com/datasets/53ea466a189b4f43b3dfb7b38fa7f3b6_1.geojson?outSR={%22latestWkid%22:2249,%22wkid%22:102686}';
+    },
+    JSONStyle(){
+      return {fillOpacity: 0.0, strokeWeight: 1, strokeColor: 'white',strokeOpacity:0.1 };
     }
+
   },
   methods: {
     drawMap: function() {
+      // Getting map
       this.$refs.heatmap.$mapPromise.then(map => {
         map = new this.google.maps.Map(
           document.getElementById("map"),
-          this.options
+          this.options // adding options for center, map type and controls
         );
+
+        // Adding GeoJSON 
+        map.data.loadGeoJson(this.JSONurl);
+        map.data.setStyle(this.JSONStyle);
+
+        // Adding Heatmap Layer
         var heatmap = new this.google.maps.visualization.HeatmapLayer({
           data: this.heatmapPoints
         });
+        heatmap.set('opacity', 0.8);
+        heatmap.set('gradient', this.gradient);
         heatmap.setMap(map);
+
+        // Customizing map with aubergine theme
         var styledMap = new this.google.maps.StyledMapType(this.mapStyle, {
           name: "Styled Map"
         });
         map.mapTypes.set("styled_map", styledMap);
         map.setMapTypeId("styled_map");
       });
-    }
+    },
   },
   mounted() {this.drawMap()},
   beforeUpdate() {this.drawMap()}
