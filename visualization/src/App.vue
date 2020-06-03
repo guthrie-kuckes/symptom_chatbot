@@ -23,6 +23,7 @@
     </v-navigation-drawer>
 
     <v-app-bar app dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <div>
         <v-tabs v-model="tab" align-with-title>
           <v-tabs-slider></v-tabs-slider>
@@ -98,11 +99,22 @@ export default {
       });
 
       var cors_enabled = firebase.functions().httpsCallable("cors_enabled");
+      
+      var _selectedRace = (this.tab == 1) ? this.selectedCategories : [];
+      var _selectedAge = (this.tab == 0 ) ? this.selectedCategories : [];
 
-      cors_enabled({ race: "white" }).then(
+      params = { race: _selectedRace, age: _selectedAge };
+      // params = {race: ["white", "hispanic"]};
+
+      console.log("params is", params);
+      cors_enabled(params).then(
         res => {
-          console.log(res);
-          this.points = res.data;
+          res.data.forEach(function(item) {console.log(item)});
+          if(res.data.length > 0){
+            this.points = res.data;
+          } 
+            
+
         },
         error => {
           console.log("Error is", error);

@@ -60,23 +60,26 @@ def sort_data(request):
         db = firestore.Client()
         q = db.collection(u'test')
         for elem in _request.keys():
-            if not _request[elem] == '':
-                print("Searching for", elem, '==',
-                      u'{}'.format(_request[elem]))
-                q = q.where(elem, '==', u'{}'.format(_request[elem]))
+            print(elem, _request[elem], type(_request[elem]))
+            if _request[elem] != []:
+                print("Searching for", elem, 'IN', _request[elem])
+                q = q.where(elem, 'in', _request[elem])
         docs = q.stream()
 
         for doc in docs:
             d = doc.to_dict()
             location = d['location']
+            print("user", d)
+            # print("location is", location, d)
+
             if location in zipcodes:
                 coords = zipcodes[location]
-            l.append(coords)
+                l.append(coords)
 
         print("Locations are ", l)
 
-    except ImportError:
-        print("NO module found")
+    except Exception as e:
+        print(e)
 
     # return cors_enabled_function_auth(request)
 
@@ -85,7 +88,7 @@ def cors_enabled(request):
     # For more information about CORS and CORS preflight requests, see
     # https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request
     # for more information.
-
+    print("Processing", request)
     # Set CORS headers for preflight requests
     if request.method == 'OPTIONS':
         # Allows GET requests from any origin with the Content-Type
@@ -96,6 +99,7 @@ def cors_enabled(request):
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Max-Age': '3600'
         }
+        print("returning early")
         return ('', 204, headers)
 
     # Set CORS headers for the main request
@@ -105,7 +109,7 @@ def cors_enabled(request):
 
     print("In function", request)
     _request = request.get_json(silent=True)
-    
+
     if not _request:
         _request = request.args
     print(1, _request)
@@ -120,26 +124,24 @@ def cors_enabled(request):
         db = firestore.Client()
         q = db.collection(u'test')
         for elem in _request.keys():
-            if not _request[elem] == '':
-                print("Searching for", elem, '==',
-                      u'{}'.format(_request[elem]))
-                q = q.where(elem, '==', u'{}'.format(_request[elem]))
+            print(elem, _request[elem], type(_request[elem]))
+            if _request[elem] != []:
+                print("Searching for", elem, 'IN', _request[elem])
+                q = q.where(elem, 'in', _request[elem])
         docs = q.stream()
         for doc in docs:
             d = doc.to_dict()
             location = d['location']
+            print("location is", location)
             if location in zipcodes:
                 coords = zipcodes[location]
-            l.append(coords)
+                l.append(coords)
 
         print("Locations are ", l)
-    except ImportError:
-        print("NO module found")
-
-    
-        
-
-    
+    except Exception as e:
+        print(e)
+        print("returning early")
+        return ('', 204, headers)
 
     print("Headers are ", headers)
 
