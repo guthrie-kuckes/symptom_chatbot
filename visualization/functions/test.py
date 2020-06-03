@@ -4,7 +4,7 @@ import main
 
 
 def test_print_name():
-    race = 'white'
+    race = ['white']
     age = ['18', '20']
     data = {'race': race}
     req = Mock(get_json=Mock(return_value=data), args=data)
