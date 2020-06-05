@@ -383,7 +383,7 @@ export default {
       };
     },
     JSONurl(){
-      return 'http://bostonopendata-boston.opendata.arcgis.com/datasets/53ea466a189b4f43b3dfb7b38fa7f3b6_1.geojson?outSR={%22latestWkid%22:2249,%22wkid%22:102686}';
+      return 'https://bostonopendata-boston.opendata.arcgis.com/datasets/53ea466a189b4f43b3dfb7b38fa7f3b6_1.geojson?outSR={%22latestWkid%22:2249,%22wkid%22:102686}';
     },
     JSONStyle(){
       return {fillOpacity: 0.0, strokeWeight: 1, strokeColor: 'white',strokeOpacity:0.5 };
