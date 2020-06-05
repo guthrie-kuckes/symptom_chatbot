@@ -131,3 +131,4 @@ dmypy.json
 
 #node modules
 node_modules
+sms_cloud_funcs/credentials.py
