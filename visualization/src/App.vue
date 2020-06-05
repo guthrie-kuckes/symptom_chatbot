@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire" dark>
-    <v-navigation-drawer disable-resize-watcher v-model="drawer" app dark>
+    <v-navigation-drawer  hide-overlay permanent app dark>
       <v-list dense>
         <v-list-item>
           <v-list-item-content>
@@ -10,7 +10,13 @@
         <v-list-item>
           <v-list-item-content>
             <v-layout column>
-              <v-flex v-for="category in drawerItems[tab]" :key="category.substring(0,1)">
+              <v-select 
+              v-model='tabItem' 
+              :items='labels'  
+              label="Category"
+              :item-text="tabItem" 
+              outlined></v-select>
+              <v-flex v-for="category in drawerItems[tabItem]" :key="category.substring(0,2)">
                 <v-checkbox v-model="selectedCategories" :label="category" :value="category"></v-checkbox>
               </v-flex>
               <v-btn @click="search(selectedCategories)">Search</v-btn>
@@ -23,13 +29,13 @@
     </v-navigation-drawer>
 
     <v-app-bar app dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
       <div>
-        <v-tabs v-model="tab" align-with-title>
+        <!-- <v-tabs v-model="tab" align-with-title>
           <v-tabs-slider></v-tabs-slider>
 
           <v-tab v-for="item in labels" :key="item" @click="clearCategories()">{{ item }}</v-tab>
-        </v-tabs>
+        </v-tabs> -->
       </div>
     </v-app-bar>
     <v-content>
@@ -60,10 +66,12 @@ export default {
   },
   data() {
     return {
+      
+      tabItem: '',
       tab: 0,
       drawer: true,
       active: null,
-      labels: ["Age", "Race"],
+      labels: ["Age", "Race", "Symptom Severity", "Contact"],
       points: [
         { lat: 42.35843, lng: -71.05977 },
         { lat: 42.357117, lng: -71.059719 },
@@ -81,10 +89,13 @@ export default {
         { lat: 42.256117, lng: -71.059019 },
         { lat: 42.256117, lng: -71.059719 }
       ],
-      drawerItems: [
-        ["0-18", "19-25", "26-45", "45-65", "65-80", "Above 80"],
-        ["white", "hispanic", "black", "asian", "other"]
-      ],
+      drawerItems: {
+        "": null,
+        "Age": ["0-18", "19-25", "26-45", "45-65", "65-80", "Above 80"],
+        "Race": ["white", "hispanic", "black", "asian", "other"],
+        "Symptom Severity": ["none", "mild", "moderate", "severe"],
+        "Contact":["Yes", "No"]
+      },
       selectedCategories: []
       // currentPoints: this.points[this.tab]
     };
@@ -99,27 +110,47 @@ export default {
       });
 
       var cors_enabled = firebase.functions().httpsCallable("cors_enabled");
-      
-      var _selectedRace = (this.tab == 1) ? this.selectedCategories : [];
-      var _selectedAge = (this.tab == 0 ) ? this.selectedCategories : [];
 
-      params = { race: _selectedRace, age: _selectedAge };
+      var _selectedRace = this.tab == 1 ? this.selectedCategories : [];
+      var _selectedAge = this.tab == 0 ? this.selectedCategories : [];
+      var _selectedSymptoms = this.tab == 2 ? this.selectedCategories : [];
+      var _selectedContact =
+        this.tab == 3 ? this.intoBoolean(this.selectedCategories) : [];
+      console.log("result is", _selectedContact);
+
+      params = {
+        race: _selectedRace,
+        age: _selectedAge,
+        severity: _selectedSymptoms,
+        contact: _selectedContact
+      };
       // params = {race: ["white", "hispanic"]};
 
       console.log("params is", params);
       cors_enabled(params).then(
         res => {
-          res.data.forEach(function(item) {console.log(item)});
-          if(res.data.length > 0){
+          res.data.forEach(function(item) {
+            console.log(item);
+          });
+          if (res.data.length > 0) {
             this.points = res.data;
-          } 
-            
-
+          }
         },
         error => {
           console.log("Error is", error);
         }
       );
+    },
+    intoBoolean: function(cat) {
+      var res = [];
+      for (var item in cat) {
+        if (item == "yes") {
+          res.push(true);
+        } else {
+          res.push(false);
+        }
+      }
+      return res;
     }
   },
   mounted() {
