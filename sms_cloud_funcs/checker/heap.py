@@ -24,7 +24,6 @@ l0 = [
 l1 = [
 
     funcs.hasLifeThreatingSymptoms,
-    # "Yes/Some => Have life threatning symptoms?",
     funcs.hasContact
 ]
 
@@ -53,7 +52,8 @@ l3 = [
 
 l4 = [
     funcs.race,
-    # "gender",
+    funcs.gender,
+    funcs.age,
     funcs.location
 ]
 

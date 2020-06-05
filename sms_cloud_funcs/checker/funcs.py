@@ -8,7 +8,7 @@ from binascii import hexlify
 
 
 db = firestore.Client()
-collection = db.collection(u'test2')
+collection = db.collection(u'test4')
 
 
 def get_step(user, cstep):
@@ -81,13 +81,34 @@ def race(current_step, response, user):
         4: 'other'
     }
     push_to_firebase(user, "race", r[response])
-    return 16
+    return current_step+1
+def gender(current_step, response, user):
+    if response == 0:
+        push_to_firebase(user, 'gender', 'female')
+    elif response == 2:
+        push_to_firebase(user, 'gender', 'male')
+    else:
+        push_to_firebase(user, 'gender', 'other')
+    return current_step+1
 
+def age(current_step, response, user):
+    if type(response) != int:
+        reponse = eval(response)
+    _age = {
+        0:'0-18',
+        1: '19-25',
+        2: '26-45',
+        3: '45-65',
+        4: '65-80',
+        5: 'Above 80'
+    }
+    push_to_firebase(user, "age", _age[response])
+    return current_step+1
 
 def location(current_step, response, user):
-    print("location", location)
+    # print("location", response)
     push_to_firebase(user, "location", response)
-    return None
+    return current_step+1
 def have_symptoms(current_step, response, user):
     if type(response) != int:
         response = eval(response)

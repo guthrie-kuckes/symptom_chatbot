@@ -36,9 +36,10 @@ l3 = [
 l4 = [
     # "We will now ask you to provide other info. Is this okay?",
     "What is your race?\n0: black\n1: asian\n2: white\n3: hispanic\n4: other",
-    # "gender",
+    "What is your gender?\n0: female\n1: male\n2: other",
+    "What is your age?\n0: 0-18" +"\n1: 19-25" +"\n2: 26-45" +"\n3: 45-65" +"\n4: 65-80" +"\n5: Above 80",
     "Please type in your five digit zip code"
-    ""
+    # ""
 ]
 
 messages = l0+l1+l2+l3+l4
