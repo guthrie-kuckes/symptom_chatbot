@@ -25,29 +25,29 @@ l1 = [
 
     funcs.hasLifeThreatingSymptoms,
     # "Yes/Some => Have life threatning symptoms?",
-    "No =>  Contact with person?"
+    funcs.hasContact
 ]
 
 l2 = [
     funcs.call911,
-    "No => Have Experienced symptoms?",
+    funcs.have_symptoms,
 
-    "Yes => Quarantine and dr",
-    "No/Maybe => Contact with symptoms?"
+    funcs.callDoctor,
+    funcs.have_contact_with_symptoms
 ]
 
 l3 = [
-    None,
-    None,
+    funcs.r,
+    funcs.r,
 
-    "Yes => symptoms",
-    "No => symptoms",
+    funcs.getTested,
+    funcs.noTest,
 
-    None,
-    None,
+    funcs.r,
+    funcs.r,
 
-    "Yes => Call dr",
-    "No => No testing"
+    funcs.callDoctor,
+    funcs.noTest
 
 ]
 

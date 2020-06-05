@@ -1,40 +1,43 @@
+options = "\n0: Yes\n1: Somewhat/Don't Know\n2: No"
+prompt = "\n\nAre you willing to share information for research purposes? It cannot be linked to you.\n0: yes, 1: no"
 l0 = [
   
     "Do you feel sick?"
 ]
 
 l1 = [
-    "Have life threatning symptoms?",
-    "Contact with person?"
+    "Do you have any life threatning symptoms?"+options,
+    "Have you had contact with person diagnosed with COVID-19?"+options
 ]
 
 l2 = [
-    "Call 911. Please enter your race",
-    "Have Experienced symptoms?",
+    "Please call 911"+prompt,
+    "In the past two weeks, how many of the following symptoms have you experienced?\nCough, Shortness of breath or difficulty breathing, chest feels tight when you breathe, gasping for air, hard to talk, Pain or pressure in chest, Fever, chills,New loss of taste or smell, dizziness , confusion, lightheadedness, Muscle pain, Sore throat, Nausea, vomiting, or diarrhea, tirednesss",
 
-    "Quarantine and dr",
-    "Contact with symptoms?"
+    "Please self-quarantine and call your doctor."+prompt,
+    "Have you had contact with anyone that has experience the following symptoms?\nCough, fever, chills, or chest pain"
 ]
 
 l3 = [
-    None,
-    None,
+    prompt,
+    prompt,
 
-    "symptoms?",
-    "symptoms?",
+    "Get Tested"+prompt,
+    "No testing needed"+prompt,
 
-    None,
-    None,
+    prompt,
+    prompt,
 
-    "Call dr",
-    "Do testing"
+    "Call Dr"+prompt,
+    "Do testing"+prompt
 
 ]
 
 l4 = [
-    "race",
+    # "We will now ask you to provide other info. Is this okay?",
+    "What is your race?\n0: black\n1: asian\n2: white\n3: hispanic\n4: other",
     # "gender",
-    "location"
+    "Please type in your five digit zip code"
     ""
 ]
 

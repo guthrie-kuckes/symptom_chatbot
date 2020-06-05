@@ -16,7 +16,7 @@ def get_step(user, cstep):
     snap = collection.document(user).get()
     snap = snap.to_dict()
     # print(snap)
-    if snap == {} or snap ==None or snap['step'] == 'None':
+    if snap == {} or snap ==None:
         push_to_firebase(user, "step", 0)
         return 0
     # print("\nUser is at step",snap['step'] )
@@ -63,19 +63,69 @@ def call911(current_step, response, user):
 
 def callDoctor(current_step, response, user):
     return 15
+def getTested(current_step, response, user):
+    return 15
+def noTest(current_step, response, user):
+    return 15
 
 
 def race(current_step, response, user):
     print("race", response)
+    if type(response) != int:
+        response = eval(response)
     r = {
         0: 'black',
-        1: 'asian'
+        1: 'asian',
+        2: 'white',
+        3: 'hispanic',
+        4: 'other'
     }
     push_to_firebase(user, "race", r[response])
-    return current_step+1
+    return 16
 
 
 def location(current_step, response, user):
     print("location", location)
     push_to_firebase(user, "location", response)
     return None
+def have_symptoms(current_step, response, user):
+    if type(response) != int:
+        response = eval(response)
+    s = None
+    n = None
+    if response <= 2:
+        s = "mild"
+        n= 2
+    elif response <= 4:
+        s = "moderate"
+        n = 2
+    else:
+        s = "severe"
+        n = 1
+    print("symptoms", s)
+    push_to_firebase(user, 'symptoms', s)
+
+    return current_step*2 + n
+
+
+def have_contact_with_symptoms(current_step, response, user):
+    contact = None
+    step = None
+    if response: 
+        contact = 'yes'
+        step = 0
+    else:
+        contact = 'no'
+        step = 1
+    push_to_firebase(user, 'contact', contact)
+    return current_step*2 + step
+def hasContact(current_step,response, user):
+    if not response:
+        push_to_firebase(user, 'symptoms', 'yes')
+        return current_step*2 +1
+    else:
+        push_to_firebase(user,'contact', 'yes')
+        return current_step*2 + 2
+
+def r(a,b,c):
+    return 15
