@@ -99,8 +99,8 @@ def cors_enabled(request):
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Max-Age': '3600'
         }
-        print("returning early")
-        return ('', 204, headers)
+        # print("returning early")
+        # return ('', 204, headers)
 
     # Set CORS headers for the main request
     headers = {
@@ -124,7 +124,7 @@ def cors_enabled(request):
         db = firestore.Client()
         q = db.collection(u'test')
         for elem in _request.keys():
-            print(elem, _request[elem], type(_request[elem]))
+            # print(elem, _request[elem], type(_request[elem]))
             if _request[elem] != []:
                 print("Searching for", elem, 'IN', _request[elem])
                 q = q.where(elem, 'in', _request[elem])

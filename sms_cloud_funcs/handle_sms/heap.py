@@ -59,4 +59,4 @@ l4 = [
 
 steps = l0+l1+l2+l3+l4
 # traversed(steps)
-# print(len(steps))
+print(len(steps))

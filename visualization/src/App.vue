@@ -106,6 +106,9 @@ export default {
     };
   },
   methods: {
+    getTab: function(){
+      return this.labels.indexOf(this.tabItem)
+    },
     clearCategories: function() {
       this.selectedCategories = [];
     },
@@ -117,13 +120,13 @@ export default {
       });
 
       var cors_enabled = firebase.functions().httpsCallable("cors_enabled");
-
-      var _selectedRace = this.tab == 0 ? this.selectedCategories : [];
-      var _selectedAge = this.tab == 1 ? this.selectedCategories : [];
-      var _selectedSymptoms = this.tab == 2 ? this.selectedCategories : [];
+      console.log("Using", this.getTab(), this.tabItem)
+      var _selectedAge = this.getTab() == 0 ? this.selectedCategories : [];
+      var _selectedRace = this.getTab() == 1 ? this.selectedCategories : [];
+      var _selectedSymptoms = this.getTab() == 2 ? this.selectedCategories : [];
       var _selectedContact =
-        this.tab == 3 ? this.intoBoolean(this.selectedCategories) : [];
-      // var _selectedGender = this.tab == 4 ? this.selectedCategories : [];
+        this.getTab() == 3 ? this.intoBoolean(this.selectedCategories) : [];
+      var _selectedGender = this.getTab() == 4 ? this.selectedCategories : [];
 
 
       // console.log("result is", _selectedContact);
@@ -133,12 +136,12 @@ export default {
         age: _selectedAge,
         severity: _selectedSymptoms,
         contact: _selectedContact,
-        // gender: _selectedGender
+        gender: _selectedGender
       };
       // params = {race: ["white", "hispanic"]};
 
       console.log("params is", params);
-      cors_enabled(params).then(
+      cors_enabled({race: ['hispanic']}).then(
         res => {
           console.log(res)
           res.data.forEach(function(item) {
@@ -150,10 +153,12 @@ export default {
           } else{
             console.log("NO results")
             this.result = 2
+            // this.result = 2
           }
         },
         error => {
           console.log("Error is", error);
+          this.result = 2
         }
       );
     },

@@ -2,13 +2,13 @@
 # 1 is a little
 # 2 is no
 # from tree import push_to_firebase
-from google.cloud import firestore
+# from google.cloud import firestore
 import hashlib
 from binascii import hexlify
 
 
-db = firestore.Client()
-collection = db.collection(u'test')
+# db = firestore.Client()
+# collection = db.collection(u'test')
 
 
 def get_step(user, cstep):
