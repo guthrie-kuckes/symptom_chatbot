@@ -8,7 +8,7 @@ from binascii import hexlify
 
 
 db = firestore.Client()
-collection = db.collection(u'test4')
+collection = db.collection(u'test')
 
 
 def get_step(user, cstep):
