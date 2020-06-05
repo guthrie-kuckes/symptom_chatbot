@@ -20,7 +20,9 @@ def sms_ahoy_reply():
     resp = MessagingResponse()
     print("got a request")
     # Add a message
-    resp.message("Ahoy! Thanks so much for your message.")
+    body = request.values.get('Body', None)
+    mes = "Ahoy! Thanks so much for your message of " + body
+    resp.message(mes)
 
     return str(resp)
 
