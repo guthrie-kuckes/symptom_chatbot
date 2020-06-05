@@ -4,9 +4,9 @@
 
 
 //GUTHRIE'S personal sid, auth token and number
-const accountSid = '';
-const authToken = '';
-const freePhoneNumber = "";
+const accountSid = 'AC2e7524c64e69cd4843c70c59e9b32ef6';
+const authToken = '30b4022d4974564ff352cb0cb8a5d5cf';
+const freePhoneNumber = "+12029339382";
 const guthriesIphone = "_______";
 
 const client = require('twilio')(accountSid, authToken);
