@@ -9,7 +9,7 @@ l1 = [
 ]
 
 l2 = [
-    "Call 911",
+    "Call 911. Please enter your race",
     "Have Experienced symptoms?",
 
     "Quarantine and dr",
@@ -33,8 +33,9 @@ l3 = [
 
 l4 = [
     "race",
-    "gender",
+    # "gender",
     "location"
+    ""
 ]
 
 messages = l0+l1+l2+l3+l4
