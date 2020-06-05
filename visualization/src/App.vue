@@ -15,7 +15,9 @@
               :items='labels'  
               label="Category"
               :item-text="tabItem" 
-              outlined></v-select>
+              outlined
+              @click=clearCategories()
+              ></v-select>
               <v-flex v-for="category in drawerItems[tabItem]" :key="category.substring(0,2)">
                 <v-checkbox v-model="selectedCategories" :label="category" :value="category"></v-checkbox>
               </v-flex>
@@ -41,7 +43,9 @@
     <v-content>
       <v-container class="fill-height" fluid>
         <v-layout align-center justify-center column>
-          <Map :points="points" />
+        <Map v-if="result == 0" :points="points" />
+        <p v-else-if="result == 1">Loading</p>
+        <p v-else>No results </p>
         </v-layout>
       </v-container>
     </v-content>
@@ -64,14 +68,15 @@ export default {
   props: {
     source: String
   },
+  // ini
   data() {
     return {
-      
+      result: 0,
       tabItem: '',
       tab: 0,
       drawer: true,
       active: null,
-      labels: ["Age", "Race", "Symptom Severity", "Contact"],
+      labels: ["Age", "Race", "Symptom Severity", "Contact", "Gender"],
       points: [
         { lat: 42.35843, lng: -71.05977 },
         { lat: 42.357117, lng: -71.059719 },
@@ -80,7 +85,6 @@ export default {
         { lat: 42.356117, lng: -71.059919 },
         { lat: 42.356117, lng: -71.059019 },
         { lat: 42.356117, lng: -71.059719 },
-
         { lat: 42.25843, lng: -71.05977 },
         { lat: 42.257117, lng: -71.059719 },
         { lat: 42.256117, lng: -71.059719 },
@@ -94,7 +98,8 @@ export default {
         "Age": ["0-18", "19-25", "26-45", "45-65", "65-80", "Above 80"],
         "Race": ["white", "hispanic", "black", "asian", "other"],
         "Symptom Severity": ["none", "mild", "moderate", "severe"],
-        "Contact":["Yes", "No"]
+        "Contact":["Yes", "No"],
+        "Gender": ["female", "male", "other"]
       },
       selectedCategories: []
       // currentPoints: this.points[this.tab]
@@ -105,35 +110,46 @@ export default {
       this.selectedCategories = [];
     },
     search: function(params) {
+      this.result = 1
+
       params.forEach(function(item) {
         console.log(item);
       });
 
       var cors_enabled = firebase.functions().httpsCallable("cors_enabled");
 
-      var _selectedRace = this.tab == 1 ? this.selectedCategories : [];
-      var _selectedAge = this.tab == 0 ? this.selectedCategories : [];
+      var _selectedRace = this.tab == 0 ? this.selectedCategories : [];
+      var _selectedAge = this.tab == 1 ? this.selectedCategories : [];
       var _selectedSymptoms = this.tab == 2 ? this.selectedCategories : [];
       var _selectedContact =
         this.tab == 3 ? this.intoBoolean(this.selectedCategories) : [];
-      console.log("result is", _selectedContact);
+      // var _selectedGender = this.tab == 4 ? this.selectedCategories : [];
+
+
+      // console.log("result is", _selectedContact);
 
       params = {
         race: _selectedRace,
         age: _selectedAge,
         severity: _selectedSymptoms,
-        contact: _selectedContact
+        contact: _selectedContact,
+        // gender: _selectedGender
       };
       // params = {race: ["white", "hispanic"]};
 
       console.log("params is", params);
       cors_enabled(params).then(
         res => {
+          console.log(res)
           res.data.forEach(function(item) {
             console.log(item);
           });
           if (res.data.length > 0) {
             this.points = res.data;
+            this.result = 0
+          } else{
+            console.log("NO results")
+            this.result = 2
           }
         },
         error => {
