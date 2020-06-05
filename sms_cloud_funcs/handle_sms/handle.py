@@ -1,4 +1,3 @@
-# from tree import process_response
 from heap import steps
 from messages import messages, options
 from funcs import get_step, hash_phone, push_to_firebase
@@ -19,11 +18,11 @@ def process_response(phone, response, c_step):
         push_to_firebase(phone_hash, 'step', current_step)
 
         # send information back to user
-        send_message(phone, text_message)
-        return current_step
+        # send_message(phone, text_message)
+        return text_message
     else:
         print("Thank you\n\n")
-        exit()
+        return "Thank you"
 
 def take_next_step(current_step, response, user):
     # now we should do:
@@ -39,11 +38,3 @@ def take_next_step(current_step, response, user):
     else:
         print("\n\nThank you\n\n")
         exit()
-
-
-
-def send_message(phone, m):
-    print(m)
-
-
-run_test(None)
