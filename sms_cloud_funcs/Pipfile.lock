@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "60b3bbe8c9cdc7565ff54ab9ed0691c2134e5a1cb418b2c43e1abba61b6cd512"
+            "sha256": "7075826e2efcb5a6844dd4225ba2461212eeb6f19e3baa59663c6720a994c51b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -44,6 +44,22 @@
             ],
             "index": "pypi",
             "version": "==1.1.2"
+        },
+        "functions-framework": {
+            "hashes": [
+                "sha256:cbb755a04d370bab4f7df3b187d9971bd07a5b2ed1227764abc561098ffb2e77",
+                "sha256:cfe5b5f7b851cc785e09fcf024be357a68d7c748c94e5b5be24ea9ea556c24a6"
+            ],
+            "index": "pypi",
+            "version": "==1.4.3"
+        },
+        "gunicorn": {
+            "hashes": [
+                "sha256:1904bb2b8a43658807108d59c3f3d56c2b6121a701161de0ddf9ad140073c626",
+                "sha256:cd4a810dd51bf497552cf3f863b575dabd73d6ad6a91075b65936b151cbf4f9c"
+            ],
+            "markers": "platform_system != 'Windows'",
+            "version": "==20.0.4"
         },
         "idna": {
             "hashes": [
@@ -104,6 +120,12 @@
             ],
             "version": "==1.1.1"
         },
+        "pathtools": {
+            "hashes": [
+                "sha256:7c35c5421a39bb82e58018febd90e3b6e5db34c5443aaaf742b3f33d4655f1c0"
+            ],
+            "version": "==0.1.2"
+        },
         "pyjwt": {
             "hashes": [
                 "sha256:5c6eca3c2940464d106b99ba83b00c6add741c9becaec087fb7ccdefea71350e",
@@ -145,6 +167,12 @@
                 "sha256:88206b0eb87e6d677d424843ac5209e3fb9d0190d0ee169599165ec25e9d9115"
             ],
             "version": "==1.25.9"
+        },
+        "watchdog": {
+            "hashes": [
+                "sha256:c560efb643faed5ef28784b2245cf8874f939569717a4a12826a173ac644456b"
+            ],
+            "version": "==0.10.2"
         },
         "werkzeug": {
             "hashes": [
