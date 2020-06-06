@@ -27,10 +27,14 @@ def handle_sms(request):
 
         # Add a message
         body = request.values.get('Body', None)
-        phone = "2345678765"
+        if len(body):
+            body = eval(body)
+
+        phone = request.values.get('From', None)
+        print("phone", phone)
 
         # mes = "We recieved your message  " + phone +" " +" body"
-        mes = process_response(phone, random.randint(0,1), 0)
+        mes = process_response(phone, body, 0)
 
         resp.message(mes)
     except Exception as e:

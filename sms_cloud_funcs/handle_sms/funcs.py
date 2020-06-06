@@ -2,13 +2,13 @@
 # 1 is a little
 # 2 is no
 # from tree import push_to_firebase
-# from google.cloud import firestore
+from google.cloud import firestore
 import hashlib
 from binascii import hexlify
 
 
-# db = firestore.Client()
-# collection = db.collection(u'test')
+db = firestore.Client()
+collection = db.collection(u'test')
 
 
 def get_step(user, cstep):
@@ -85,7 +85,7 @@ def race(current_step, response, user):
 def gender(current_step, response, user):
     if response == 0:
         push_to_firebase(user, 'gender', 'female')
-    elif response == 2:
+    elif response == 1:
         push_to_firebase(user, 'gender', 'male')
     else:
         push_to_firebase(user, 'gender', 'other')
@@ -106,7 +106,7 @@ def age(current_step, response, user):
     return current_step+1
 
 def location(current_step, response, user):
-    # print("location", response)
+    print("location", response)
     push_to_firebase(user, "location", response)
     return current_step+1
 def have_symptoms(current_step, response, user):

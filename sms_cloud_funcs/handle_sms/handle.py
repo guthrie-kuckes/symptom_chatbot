@@ -7,12 +7,12 @@ def process_response(phone, response, c_step):
     # checking firebase with phone hash what step the user is at
     phone_hash = hash_phone(phone) # do a deterministic hash 
     current_step = get_step(phone_hash, c_step)
-    # print('\n')
+    print("step", current_step)
     if current_step != None and current_step < len(steps):
         # take next step in the tree
         # print("response", response)
         current_step, text_message = take_next_step(current_step, response, phone_hash)
-        # print("message :", text_message)
+        print("message :", text_message)
         
         # update step to firebase 
         push_to_firebase(phone_hash, 'step', current_step)
@@ -26,7 +26,7 @@ def process_response(phone, response, c_step):
 
 def take_next_step(current_step, response, user):
     # now we should do:
-    # print("step is", steps[current_step], current_step)
+    print("step is", steps[current_step], current_step)
     
     nextStep =  steps[current_step](current_step, response, user)
     # print(nextStep, len(steps))

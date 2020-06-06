@@ -1,7 +1,7 @@
 from unittest.mock import Mock
 
 import main
-
+# testing function locally
 
 def test_print_name():
     race = ['white']
